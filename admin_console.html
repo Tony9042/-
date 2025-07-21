@@ -1,1 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>後台管理 - 內容管理</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body { margin:0; font-family:'Open Sans','微軟正黑體',sans-serif; background:#f4f7f9; color:#333; }
+    header { background:#19a43b; color:#fff; padding:20px; text-align:center; }
+    main { max-width:800px; margin:20px auto; padding:0 20px; }
+    h1,h2 { margin:0 0 10px; }
+    form { background:#fff; padding:20px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); margin-bottom:30px; }
+    form input[type=text], form textarea { width:100%; padding:8px; margin:8px 0; border:1px solid #ccc; border-radius:4px; }
+    form input[type=file] { margin:8px 0; }
+    form button { background:#4ad99b; color:#fff; border:none; padding:10px 20px; border-radius:4px; cursor:pointer; }
+    form button:hover { background:#3a8f6e; }
+    ul { list-style:none; padding:0; }
+    .item-list li { background:#fff; margin:10px auto; padding:8px 12px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.05); display:flex; align-items:flex-start; gap:15px; max-width:600px; }
+    .item-list img { width:120px; height:120px; object-fit:cover; border-radius:4px; }
+    .item-info { flex:1; }
+    .item-info h3 { margin:0 0 5px; color:#19a43b; }
+    .item-info p { margin:0; font-size:0.9rem; }
+    .item-buttons button { margin-left:8px; background:#ffa726; border:none; padding:6px 10px; color:#fff; border-radius:4px; cursor:pointer; }
+    .item-buttons .btn-delete { background:#ef5350; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>後台管理：產品 / 服務 / 最新消息</h1>
+  </header>
+  <main>
+    <!-- 產品管理 -->
+    <form id="product-form">
+      <h2>新增 / 編輯 產品</n2>
+      <input type="hidden" id="product-index" value="-1">
+      <label>標題：</label>
+      <input type="text" id="product-title" placeholder="輸入產品標題" required>
+      <label>敘述：</label>
+      <textarea id="product-desc" rows="3" placeholder="輸入產品敘述"></textarea>
+      <label>圖片：</label>
+      <input type="file" id="product-image" accept="image/*">
+      <button type="submit">儲存產品</button>
+    </form>
+    <h2>產品列表</h2>
+    <ul id="product-list" class="item-list"></ul>
 
+    <!-- 服務管理 -->
+    <form id="service-form">
+      <h2>新增 / 編輯 服務</h2>
+      <input type="hidden" id="service-index" value="-1">
+      <label>標題：</label>
+      <input type="text" id="service-title" placeholder="輸入服務標題" required>
+      <label>敘述：</label>
+      <textarea id="service-desc" rows="3" placeholder="輸入服務敘述"></textarea>
+      <label>圖片：</label>
+      <input type="file" id="service-image" accept="image/*">
+      <button type="submit">儲存服務</button>
+    </form>
+    <h2>服務列表</h2>
+    <ul id="service-list" class="item-list"></ul>
+
+    <!-- 消息管理 -->
+    <form id="news-form">
+      <h2>新增 / 編輯 最新消息</h2>
+      <input type="hidden" id="news-index" value="-1">
+      <label>標題：</label>
+      <input type="text" id="news-title" placeholder="輸入消息標題" required>
+      <label>敘述：</label>
+      <textarea id="news-desc" rows="3" placeholder="輸入消息敘述"></textarea>
+      <label>圖片：</label>
+      <input type="file" id="news-image" accept="image/*">
+      <button type="submit">儲存消息</button>
+    </form>
+    <h2>消息列表</h2>
+    <ul id="news-list" class="item-list"></ul>
+  </main>
+
+  <script>
+    // 通用渲染與存儲函式
+    function setupSection(key) {
+      let items = JSON.parse(localStorage.getItem(key) || '[]');
+      const form = document.getElementById(key + '-form');
+      const listEl = document.getElementById(key + '-list');
+      const idxInput = document.getElementById(key + '-index');
+      const titleInput = document.getElementById(key + '-title');
+      const descInput  = document.getElementById(key + '-desc');
+      const imgInput   = document.getElementById(key + '-image');
+
+      function render() {
+        listEl.innerHTML = '';
+        items.forEach((it, i) => {
+          const li = document.createElement('li'); li.className = 'item-item';
+          li.className = 'product-item';
+          li.innerHTML = `
+            <img src="${it.img || 'https://via.placeholder.com/120'}" alt="圖片">
+            <div class="item-info">
+              <h3>${it.title}</h3>
+              <p>${it.desc}</p>
+            </div>
+            <div class="item-buttons">
+              <button class="btn-edit">編輯</button>
+              <button class="btn-delete">刪除</button>
+            </div>
+          `;
+          // 編輯
+          li.querySelector('.btn-edit').addEventListener('click', () => {
+            idxInput.value = i;
+            titleInput.value = it.title;
+            descInput.value = it.desc;
+          });
+          // 刪除
+          li.querySelector('.btn-delete').addEventListener('click', () => {
+            if(confirm('確定刪除？')) { items.splice(i,1); save(); render(); }
+          });
+          listEl.appendChild(li);
+        });
+      }
+      function save() {
+        localStorage.setItem(key, JSON.stringify(items));
+      }
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        const idx = parseInt(idxInput.value);
+        if(idx < 0 && !(imgInput.files && imgInput.files[0])) { alert('請選擇圖片'); return; }
+        const reader = imgInput.files[0] && new FileReader();
+        const doSave = img => {
+          const obj = { title: titleInput.value, desc: descInput.value, img };
+          if(idx>=0) items[idx] = obj; else items.push(obj);
+          save(); render(); form.reset(); idxInput.value = -1;
+        };
+        if(reader) {
+          reader.onload = ev => doSave(ev.target.result);
+          reader.readAsDataURL(imgInput.files[0]);
+        } else {
+          doSave(items[idx]?.img || '');
+        }
+      });
+      render();
+    }
+
+    // 啟動三個區塊管理
+    ['product', 'service', 'news'].forEach(setupSection);
+  </script>
+</body>
+</html>
