@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>自然有機企業官網</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; scroll-behavior: smooth; }
+    body { margin:0; font-family:'Open Sans','微軟正黑體',sans-serif; background:linear-gradient(to bottom right,#e6fff5,#ffffff); color:#333; }
+    header { position:sticky; top:0; display:flex; justify-content:space-between; align-items:center; padding:20px 40px; background:rgba(255,255,255,0.9); z-index:1000; }
+    .logo { display:flex; align-items:center; gap:10px; }
+    .logo img { width:50px; height:50px; object-fit:cover; border-radius:50%; }
+    .logo span { font-weight:bold; color:#19a43b; font-size:20px; }
+    nav a { margin-left:20px; text-decoration:none; color:#19a43b; font-weight:500; }
+    nav a:hover { color:#4ad99b; text-shadow:0 0 5px #4ad99b66; }
+
+    /* Hero Slider */
+    .hero-slider { position:relative; width:100%; overflow:hidden; }
+    .slides { display:flex; transition: transform 1s ease; }
+    .slide { min-width:100%; aspect-ratio:16/9; background-size:cover; background-position:center; display:flex; flex-direction:column; justify-content:center; align-items:center; color:white; text-align:center; }
+    .slide h1 { font-size:4rem; margin-bottom:1rem; }
+    .slide p { font-size:1.5rem; }
+
+    section { padding:80px 20px; }
+    .section-header h2 { text-align:center; font-size:2.5rem; margin:0 0 20px; color:#19a43b; }
+
+    .achievement-wrapper { display:flex; justify-content:space-around; text-align:center; padding:40px; background:#f8f9fa; border-radius:8px; margin:40px 0; }
+    .achievement-item { opacity:0; transform:translateY(20px); transition:all .6s ease; }
+    .achievement-item.visible { opacity:1; transform:translateY(0); }
+    .achievement-number { font-size:48px; font-weight:bold; }
+    .achievement-label { font-size:16px; }
+
+    /* Generic card */
+    .card {
+      background:#fff; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1);
+      padding:16px; display:flex; flex-direction:column;
+    }
+    .card img { width:100%; height:150px; object-fit:cover; border-radius:8px; margin-bottom:12px; }
+    .card h4 { color:#19a43b; margin:0 0 8px; }
+    .card p { margin:0; font-size:0.95rem; flex:1; }
+
+    /* Products grid */
+    #products-grid { display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); justify-content:center; }
+    #products-grid .card { width:320px; min-height:300px; margin:auto; }
+
+    /* Center the products filter */
+    #product-select {
+      display: block;
+      margin: 0 auto 20px;
+      padding: 8px 12px;
+      border: 2px solid #19a43b;
+      border-radius: 6px;
+      background: #fff;
+      color: #333;
+    }
+
+    /* Services & News vertical stack: image on top, text below */
+    #services-grid, #news-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 0 20px;
+    }
+    #services-grid .card, #news-grid .card {
+      width: 100%;
+      max-width: 600px;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 16px;
+      margin: 0 auto 20px;
+    }
+    #services-grid .card img, #news-grid .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+    #services-grid .card h4, #news-grid .card h4 {
+      margin: 0 0 8px;
+      text-align: left;
+    }
+    #services-grid .card p, #news-grid .card p {
+      margin: 0;
+      text-align: left;
+    }
+
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      padding: 40px 0;
+    }
+
+    /* Contact form styling with green theme */
+    .contact-form {
+      max-width: 600px;
+      margin: 20px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .contact-form input,
+    .contact-form textarea {
+      padding: 10px;
+      border: 2px solid #19a43b;
+      border-radius: 6px;
+      outline: none;
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      box-shadow: 0 0 5px rgba(26,164,59,0.5);
+    }
+    .contact-form button {
+      background: #4ad99b;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    .contact-form button:hover {
+      background: #19a43b;
+    }
+
+    footer { background:#19a43b; color:#fff; padding:40px 20px; text-align:center; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo"><img src="image\logo.jpg"><span>大豐臨實業有限公司</span></div>
+    <nav><a href="#hero">主頁</a><a href="#concept">理念</a><a href="#products">產品</a><a href="#achievements">成就</a><a href="#services">服務</a><a href="#news">消息</a><a href="#social">社群</a><a href="#contact">聯絡</a></nav>
+  </header>
+
+  <section class="hero-slider" id="hero">
+    <div class="slides">
+      <div class="slide" style="background-image:url('https://images.pexels.com/photos/707915/pexels-photo-707915.jpeg')"><h1>大豐臨實業有限公司</h1><p>我們讓自然成為品牌的一部分</p></div>
+      <div class="slide" style="background-image:url('https://images.pexels.com/photos/1438994/pexels-photo-1438994.jpeg')"><h1>永續設計</h1><p>綠色產品，守護地球</p></div>
+      <div class="slide" style="background-image:url('https://images.pexels.com/photos/721991/pexels-photo-721991.jpeg')"><h1>友善環境</h1><p>從源頭實踐環保</p></div>
+    </div>
+  </section>
+
+  <section id="concept"><div class="section-header"><h2>環保理念</h2></div><p>在當今全球氣候變遷與環境資源日益緊張的時代，環保已不再是選擇，而是每個人共同的責任。我們堅信，只有從日常生活的點滴開始，落實節能減碳、減少塑膠使用與資源回收，才能守護地球的未來。秉持「珍惜自然、永續經營」的理念，我們致力於推動環境友善的產品與服務，並積極倡導綠色生活方式，期望與大家一起攜手，為下一代創造一個更健康、更潔淨的地球家園。</p></section>
+
+  <section id="achievements"><div class="section-header"><h2>成就展示</h2></div><div class="achievement-wrapper"><div class="achievement-item"><div class="achievement-number">200+</div><div class="achievement-label">滿意客戶</div></div><div class="achievement-item"><div class="achievement-number">120+</div><div class="achievement-label">完成專案</div></div><div class="achievement-item"><div class="achievement-number">15+</div><div class="achievement-label">獲獎紀錄</div></div></div></section>
+
+  <section id="products"><div class="section-header"><h2>產品展示區</h2></div><select id="product-select"></select><div class="card-grid three-col" id="products-grid"></div></section>
+
+  <section id="services"><div class="section-header"><h2>服務展示區</h2></div><div class="card-grid one-col" id="services-grid"></div></section>
+
+  <section id="news"><div class="section-header"><h2>最新消息</h2></div><div class="card-grid one-col" id="news-grid"></div></section>
+
+    <section id="social">
+    <div class="section-header"><h2>社群連結</h2></div>
+    <div class="social-icons">
+      <a href="#"><img src="https://img.icons8.com/ios-glyphs/30/facebook-new.png" alt="Facebook"/></a>
+      <a href="#"><img src="https://img.icons8.com/ios-glyphs/30/instagram-new.png" alt="Instagram"/></a>
+      <a href="#"><img src="https://img.icons8.com/ios-glyphs/30/line-me.png" alt="Line"/></a>
+    </div>
+  </section>
+
+  <section id="contact"><div class="section-header"><h2>聯絡我們</h2></div><div class="contact-form"><input type="text" placeholder="姓名"><input type="email" placeholder="Email"><textarea rows="5" placeholder="留言內容"></textarea><button>送出</button></div></section>
+
+  <footer>© 2025 大豐臨實業有限公司. All rights reserved.</footer>
+
+  <script>
+    // Hero Slider
+    const slides = document.querySelector('.slides'); let idx=0, total=slides.children.length;
+    setInterval(()=>{ idx=(idx+1)%total; slides.style.transform=`translateX(-${idx*100}%)`; },5000);
+    // Scroll animation
+    const obs=new IntersectionObserver(e=>e.forEach(i=>{ if(i.isIntersecting){i.target.classList.add('visible'); obs.unobserve(i.target);} }),{threshold:0.1});
+    document.querySelectorAll('.achievement-item').forEach(i=>obs.observe(i));
+    
+    // Render sections
+    function renderSection(key,gridId){ const arr=JSON.parse(localStorage.getItem(key)||'[]'); const g=document.getElementById(gridId); g.innerHTML=''; arr.forEach(p=>{ const c=document.createElement('div'); c.className='card'; c.innerHTML=`<img src="${p.img}" alt=""><h4>${p.title}</h4><p>${p.desc}</p>`; g.appendChild(c); }); }
+    document.addEventListener('DOMContentLoaded',()=>{
+      // Products filter
+      const pro=JSON.parse(localStorage.getItem('product')||'[]'); const s=document.getElementById('product-select'); s.innerHTML='<option value="">所有產品</option>'; pro.forEach(p=>s.add(new Option(p.title,p.title)));
+      s.onchange=()=>{ renderSection('product','products-grid', s.value ? pro.filter(x=>x.title===s.value):pro); };
+      renderSection('product','products-grid');
+      // Services & News
+      renderSection('service','services-grid');
+      renderSection('news','news-grid');
+    });
+  </script>
+</body>
+</html>
