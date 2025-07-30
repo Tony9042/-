@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <title>庫存管理系統</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    nav button { margin-right: 10px; padding: 5px 10px; }
+    section { display: none; margin-top: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { border: 1px solid #ccc; padding: 5px; text-align: center; }
+    th { background: #f4f4f4; }
+    input[type="text"], input[type="number"], select { width: 100%; box-sizing: border-box; }
+    .action-btn { margin: 0 2px; padding: 2px 6px; }
+  </style>
+</head>
+<body>
+
+  <h1>庫存管理系統</h1>
+  <nav>
+    <button onclick="showSection('products')">產品管理</button>
+    <button onclick="showSection('purchases')">進貨單</button>
+    <button onclick="showSection('sales')">銷貨單</button>
+  </nav>
+
+  <!-- 產品管理 -->
+  <section id="productsSection">
+    <h2>產品管理</h2>
+    <form id="productForm">
+      <label>產品名稱：<input type="text" id="productName" required></label>
+      <button type="submit" id="productSubmitBtn">新增產品</button>
+      <button type="button" onclick="clearProductForm()">清除</button>
+    </form>
+    <table id="productTable">
+      <thead><tr><th>#</th><th>名稱</th><th>庫存</th><th>操作</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <!-- 進貨單 -->
+  <section id="purchasesSection">
+    <h2>進貨單</h2>
+    <form id="purchaseForm">
+      <label>產品：<select id="purchaseProduct" required></select></label>
+      <label>數量：<input type="number" id="purchaseQty" min="1" required></label>
+      <label>倉庫：<input type="text" id="purchaseLocation" value="WH01" required></label>
+      <label>編輯者：<input type="text" id="purchaseEditor" value="123" required></label>
+      <button type="submit">送出進貨單</button>
+    </form>
+    <table id="purchaseTable">
+      <thead>
+        <tr><th>單號</th><th>日期</th><th>產品</th><th>數量</th><th>倉庫</th><th>帳號</th><th>操作</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <!-- 銷貨單 -->
+  <section id="salesSection">
+    <h2>銷貨單</h2>
+    <form id="saleForm">
+      <label>產品：<select id="saleProduct" required></select></label>
+      <label>數量：<input type="number" id="saleQty" min="1" required></label>
+      <button type="submit">送出銷貨單</button>
+    </form>
+    <table id="saleTable">
+      <thead><tr><th>單號</th><th>日期</th><th>產品</th><th>數量</th><th>操作</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <script>
+    // ===== 共用函式 =====
+    function uuid(prefix) {
+      return prefix + new Date().toISOString().replace(/[-:.TZ]/g,'').slice(0,14);
+    }
+    function loadStorage(key) { return JSON.parse(localStorage.getItem(key)||'[]'); }
+    function saveStorage(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
+    function showSection(name) {
+      document.querySelectorAll('section').forEach(s=>s.style.display='none');
+      document.getElementById(name+'Section').style.display='block';
+    }
+    function computeInventory(id) {
+      const inQty = loadStorage('purchases').filter(x=>x.productId===id).reduce((a,b)=>a+Number(b.qty),0);
+      const outQty= loadStorage('sales').filter(x=>x.productId===id).reduce((a,b)=>a+Number(b.qty),0);
+      return inQty - outQty;
+    }
+
+    // ===== 產品管理 =====
+    let editingProduct = null;
+    document.getElementById('productForm').addEventListener('submit', e=>{
+      e.preventDefault();
+      const name = document.getElementById('productName').value.trim();
+      const arr = loadStorage('products');
+      if (editingProduct===null) arr.push({id:uuid('PR'),name});
+      else arr[editingProduct].name = name;
+      saveStorage('products', arr);
+      editingProduct=null;
+      document.getElementById('productForm').reset();
+      document.getElementById('productSubmitBtn').textContent='新增產品';
+      renderProducts(); renderSelectors(); renderPurchases(); renderSales();
+    });
+    function clearProductForm() {
+      editingProduct=null;
+      document.getElementById('productForm').reset();
+      document.getElementById('productSubmitBtn').textContent='新增產品';
+    }
+    function renderProducts() {
+      const tbody=document.querySelector('#productTable tbody'); tbody.innerHTML='';
+      loadStorage('products').forEach((p,i)=>{
+        const tr=tbody.insertRow();
+        tr.innerHTML=`<td>${i+1}</td><td>${p.name}</td><td>${computeInventory(p.id)}</td><td>`+
+          `<button class="action-btn" onclick="startEditProduct(${i})">編輯</button>`+
+          `<button class="action-btn" onclick="deleteProduct(${i})">刪除</button>`+`</td>`;
+      });
+    }
+    function startEditProduct(i) {
+      const arr=loadStorage('products');
+      editingProduct=i;
+      document.getElementById('productName').value=arr[i].name;
+      document.getElementById('productSubmitBtn').textContent='更新產品';
+    }
+    function deleteProduct(i) {
+      if(!confirm('確定刪除產品？')) return;
+      const arr=loadStorage('products'); arr.splice(i,1);
+      saveStorage('products',arr);
+      renderProducts(); renderSelectors(); renderPurchases(); renderSales();
+    }
+
+    // ===== 下拉選單 =====
+    function renderSelectors() {
+      const prods=loadStorage('products');
+      const pSel=document.getElementById('purchaseProduct');
+      const sSel=document.getElementById('saleProduct');
+      [pSel,sSel].forEach(sel=>{
+        sel.innerHTML='<option value="">--請選擇產品--</option>';
+        prods.forEach(p=> sel.innerHTML+=`<option value="${p.id}">${p.name}</option>`);
+      });
+    }
+
+    // ===== 進貨單 CRUD with 編輯 =====
+    document.getElementById('purchaseForm').addEventListener('submit', e=>{
+      e.preventDefault();
+      const pid=document.getElementById('purchaseProduct').value;
+      const qty=document.getElementById('purchaseQty').value;
+      const loc=document.getElementById('purchaseLocation').value;
+      const edt=document.getElementById('purchaseEditor').value;
+      if(!pid){ alert('請選擇產品'); return; }
+      const arr=loadStorage('purchases');
+      arr.push({id:uuid('P'),date:new Date().toLocaleString(),productId:pid,qty,location:loc,editor:edt});
+      saveStorage('purchases',arr);
+      e.target.reset(); renderPurchases(); renderProducts();
+    });
+    function renderPurchases() {
+      const tbody=document.querySelector('#purchaseTable tbody'); tbody.innerHTML='';
+      const arr=loadStorage('purchases');
+      const prods=loadStorage('products');
+      arr.forEach((p,i)=>{
+        const tr=tbody.insertRow();
+        if(p.editing) {
+          // 編輯模式
+          let opts='<option value="">--請選擇--</option>';
+          prods.forEach(pr=> opts+=`<option value="${pr.id}"${pr.id===p.productId?' selected':''}>${pr.name}</option>`);
+          tr.innerHTML=`<td>${p.id}</td><td>${p.date}</td><td><select id="pu_prod_${i}">${opts}</select></td>`+
+            `<td><input id="pu_qty_${i}" type="number" value="${p.qty}"></td>`+
+            `<td><input id="pu_loc_${i}" value="${p.location}"></td>`+
+            `<td><input id="pu_edt_${i}" value="${p.editor}"></td>`+
+            `<td><button class="action-btn" onclick="savePurchase(${i})">儲存</button>`+
+            `<button class="action-btn" onclick="cancelEditPurchase(${i})">取消</button></td>`;
+        } else {
+          const name=(prods.find(x=>x.id===p.productId)||{}).name||'--';
+          tr.innerHTML=`<td>${p.id}</td><td>${p.date}</td><td>${name}</td><td>${p.qty}</td>`+
+            `<td>${p.location}</td><td>${p.editor}</td>`+
+            `<td><button class="action-btn" onclick="enterEditPurchase(${i})">修改</button>`+
+            `<button class="action-btn" onclick="deletePurchase(${i})">刪除</button></td>`;
+        }
+      });
+    }
+    function enterEditPurchase(i) { const arr=loadStorage('purchases'); arr[i].editing=true; saveStorage('purchases',arr); renderPurchases(); }
+    function cancelEditPurchase(i) { const arr=loadStorage('purchases'); delete arr[i].editing; saveStorage('purchases',arr); renderPurchases(); }
+    function savePurchase(i) {
+      const arr=loadStorage('purchases');
+      const p=arr[i];
+      const pid=document.getElementById(`pu_prod_${i}`).value;
+      const qty=document.getElementById(`pu_qty_${i}`).value;
+      const loc=document.getElementById(`pu_loc_${i}`).value;
+      const edt=document.getElementById(`pu_edt_${i}`).value;
+      p.productId=pid; p.qty=qty; p.location=loc; p.editor=edt; delete p.editing;
+      saveStorage('purchases',arr); renderPurchases(); renderProducts();
+    }
+    function deletePurchase(i) { if(!confirm('確定刪除此進貨單？'))return; const arr=loadStorage('purchases'); arr.splice(i,1); saveStorage('purchases',arr); renderPurchases(); renderProducts(); }
+
+    // ===== 銷貨單 CRUD with 編輯 =====
+    document.getElementById('saleForm').addEventListener('submit', e=>{
+      e.preventDefault();
+      const pid=document.getElementById('saleProduct').value;
+      const qty=Number(document.getElementById('saleQty').value);
+      if(!pid){ alert('請選擇產品'); return; }
+      if(qty>computeInventory(pid)){ alert(`庫存不足：${computeInventory(pid)}`); return; }
+      const arr=loadStorage('sales'); arr.push({id:uuid('S'),date:new Date().toLocaleString(),productId:pid,qty});
+      saveStorage('sales',arr); e.target.reset(); renderSales(); renderProducts();
+    });
+    function renderSales() {
+      const tbody=document.querySelector('#saleTable tbody'); tbody.innerHTML='';
+      const arr=loadStorage('sales'); const prods=loadStorage('products');
+      arr.forEach((s,i)=>{
+        const tr=tbody.insertRow();
+        if(s.editing) {
+          let opts='<option value="">--請選擇--</option>';
+          prods.forEach(pr=> opts+=`<option value="${pr.id}"${pr.id===s.productId?' selected':''}>${pr.name}</option>`);
+          tr.innerHTML=`<td>${s.id}</td><td>${s.date}</td><td><select id="sa_prod_${i}">${opts}</select></td>`+
+            `<td><input id="sa_qty_${i}" type="number" value="${s.qty}"></td>`+
+            `<td><button class="action-btn" onclick="saveSale(${i})">儲存</button>`+
+            `<button class="action-btn" onclick="cancelEditSale(${i})">取消</button></td>`;
+        } else {
+          const name=(prods.find(x=>x.id===s.productId)||{}).name||'--';
+          tr.innerHTML=`<td>${s.id}</td><td>${s.date}</td><td>${name}</td><td>${s.qty}</td>`+
+            `<td><button class="action-btn" onclick="enterEditSale(${i})">修改</button>`+
+            `<button class="action-btn" onclick="deleteSale(${i})">刪除</button></td>`;
+        }
+      });
+    }
+    function enterEditSale(i) { const arr=loadStorage('sales'); arr[i].editing=true; saveStorage('sales',arr); renderSales(); }
+    function cancelEditSale(i) { const arr=loadStorage('sales'); delete arr[i].editing; saveStorage('sales',arr); renderSales(); }
+    function saveSale(i) {
+      const arr=loadStorage('sales'); const s=arr[i];
+      const pid=document.getElementById(`sa_prod_${i}`).value;
+      const qty=Number(document.getElementById(`sa_qty_${i}`).value);
+      const original=Number(s.qty);
+      if(qty>computeInventory(pid)+original){ alert(`庫存不足：${computeInventory(pid)+original}`); return; }
+      s.productId=pid; s.qty=qty; delete s.editing; saveStorage('sales',arr);
+      renderSales(); renderProducts();
+    }
+    function deleteSale(i) { if(!confirm('確定刪除此銷貨單？'))return; const arr=loadStorage('sales'); arr.splice(i,1); saveStorage('sales',arr); renderSales(); renderProducts(); }
+
+    // ===== 初始化 =====
+    document.addEventListener('DOMContentLoaded', ()=>{
+      showSection('products'); renderProducts(); renderSelectors(); renderPurchases(); renderSales();
+    });
+  </script>
+</body>
+</html>
