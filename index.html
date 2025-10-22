@@ -1,210 +1,203 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-<meta charset="UTF-8" />
-<title>大豐臨｜自然有機官方網站</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>大豐臨實業有限公司｜官方網站</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --primary:#4ad99b; --accent:#19a43b; --ink:#2b3a2e;
-    --bg-grad:linear-gradient(135deg,#fffaf0,#f3ffe6);
-  }
-  *{box-sizing:border-box} html,body{margin:0}
-  body{font-family:'Open Sans','微軟正黑體',sans-serif;color:#333;background:var(--bg-grad)}
-  a{color:var(--accent);text-decoration:none}
+:root{
+  --ink:#1b2b26; --muted:#65726a;
+  --brand:#2b7a4b; --brand-2:#46c08e;
+  --paper:#ffffff; --soft:#f4f8f2; --line:#e6efe8; --shadow:0 10px 30px #00000012;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:'Noto Sans TC',system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft JhengHei",sans-serif;color:var(--ink);background:#eef5ee}
+a{color:var(--brand);text-decoration:none}
 
-  /* Header */
-  header{position:sticky;top:0;z-index:50;background:#ffffffcc;backdrop-filter:blur(6px);
-    display:flex;align-items:center;justify-content:space-between;padding:16px 32px;border-bottom:1px solid #eee}
-  .brand{display:flex;align-items:center;gap:10px}
-  .brand img{width:36px;height:36px;border-radius:50%;object-fit:cover}
-  .brand span{font-weight:700;color:var(--accent)}
-  nav a{margin-left:18px;font-weight:600;color:var(--accent)}
-  nav a:hover{color:var(--primary)}
+/* 產品卡標題＋ICON */
+.card .title-row{display:flex;align-items:center;gap:10px;margin-top:6px}
+.icon-circle{
+  width:28px;height:28px;border-radius:999px;
+  display:flex;align-items:center;justify-content:center;
+  background:#eaf4ec;border:1px solid #d7eadc;color:#2b7a4b;flex:0 0 28px
+}
+.icon-circle svg{width:16px;height:16px;display:block}
 
-  /* ---------- HERO（只保留一份規則） ---------- */
-  .hero{ position: relative; overflow: hidden; width: 100%; }
-  .slides{ display:flex; transition: transform 1s ease; position: relative; }
-  .slide{
-    min-width:100%;
-    aspect-ratio:16/9;          /* 想把圖片變高：改成 18/9 或 21/9 */
-    background-size:cover;
-    background-position:center;
-  }
+/* ===== NEWS（新版三欄卡片，無圖片） ===== */
+#news{
+  background: linear-gradient(180deg,#f3fbf5 0%, #eef7f0 100%);
+}
+#news .news-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:18px;
+  max-width:1180px;
+  margin:0 auto;
+}
+@media(min-width:860px){ #news .news-grid{ grid-template-columns:repeat(3,1fr); } }
 
-  /* 單一覆蓋層：只負責置中 */
-  .hero-overlay{
-    position:absolute;
-    inset:0;
-    display:grid;
-    place-items:center;
-    pointer-events:none;        /* 不擋滑動 */
-    background:none !important;
-    padding:0 !important;
-  }
+.news-card{
+  display:block;
+  background:#fff;
+  border:1px solid #e6efe8;
+  border-radius:16px;
+  box-shadow:0 10px 24px #00000010;
+  padding:16px 16px 14px;
+  transition:transform .15s ease, box-shadow .15s ease;
+  color:inherit;
+}
+.news-card:hover{ transform:translateY(-2px); box-shadow:0 14px 30px #00000014; }
+.news-badge{
+  display:inline-block; font-size:12px; padding:4px 8px; border-radius:999px;
+  background:#eaf7ee; color:#2b7a4b; border:1px solid #d6eadc; margin-bottom:8px;
+}
+#news time{ display:block; font-size:12px; color:#6b7b6d; margin-bottom:6px; }
+.news-title{ margin:0 0 8px; font-size:16px; font-weight:800; color:#1e2f29; }
+.news-excerpt{ margin:0 0 10px; color:#47564f; line-height:1.7; font-size:14px; }
+.news-more{ color:#2b7a4b; font-weight:700; font-size:14px; }
 
-  /* 唯一的黑色框（調這裡） */
-  .overlay-box{
-    pointer-events:auto;        /* 內部按鈕可點 */
-    /* 可調參數 ↓↓↓ */
-    --overlay-max-w: 900px;     /* 寬度上限 */
-    --overlay-pad-y: 28px;      /* 上下內距 ≈ 高度感 */
-    --overlay-pad-x: 22px;      /* 左右內距 */
-    --overlay-radius: 16px;     /* 圓角 */
-    --overlay-margin: 16px;     /* 與圖片四邊的安全距 */
-    /* 可調參數 ↑↑↑ */
+/* header */
+header{position:sticky;top:0;z-index:20;background:#ffffffdd;backdrop-filter:saturate(120%) blur(8px);
+  border-bottom:1px solid var(--line)}
+.nav{max-width:1180px;margin:auto;display:flex;align-items:center;justify-content:space-between;padding:12px 18px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand img{width:40px;height:40px;border-radius:50%;object-fit:cover}
+.brand b{color:var(--brand)}
+nav a{margin-left:18px;font-weight:700;color:var(--brand)}
+nav a:hover{opacity:.8}
 
-    width: min(var(--overlay-max-w), calc(100% - var(--overlay-margin)*2));
-    max-height: calc(100% - var(--overlay-margin)*2);  /* 不會高於圖片 */
-    padding: var(--overlay-pad-y) var(--overlay-pad-x);
-    border-radius: var(--overlay-radius);
-    background: rgba(0,0,0,.38);
-    color:#fff;
-    text-align:center;
-    box-sizing: border-box;
-    overflow:auto;              /* 內容過多時出滾動條，不會溢出圖片 */
-  }
-  .hero h1{font-size:clamp(32px,5vw,56px);line-height:1.2;margin:0 0 10px}
-  .hero p{font-size:clamp(16px,2.2vw,20px);opacity:.95;margin:0 0 18px}
-  .ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-  .btn{border:2px solid #fff;color:#fff;background:transparent;padding:10px 16px;border-radius:10px;cursor:pointer;font-weight:700}
-  .btn.primary{background:var(--primary);border-color:var(--primary)}
-  .btn.secondary{background:#fff;color:var(--accent);border-color:#fff}
-  .btn:hover{filter:brightness(0.95);box-shadow:0 8px 18px #0002}
-  @media (max-width: 768px){
-    .overlay-box{
-      --overlay-max-w: 92vw;
-      --overlay-pad-y: 20px;
-      --overlay-pad-x: 16px;
-      --overlay-margin: 10px;
-    }
-  }
+/* === HERO（輪播＋主題） === */
+.hero{position:relative;overflow:hidden;width:100%;padding:0;background:#000}
+.slides{display:flex;transition:transform 1s ease}
+.slide{min-width:100%;aspect-ratio:16/9;background-size:cover;background-position:center}
+.hero-overlay{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+.hero .panel{
+  pointer-events:auto;background:#0008;color:#fff;text-align:center;
+  border-radius:16px;padding:22px;width:min(900px,92vw);margin:0 16px
+}
+.hero h1{margin:4px 0 8px;font-size:clamp(28px,4.6vw,54px)}
+.hero p{margin:0 0 14px;font-size:clamp(15px,2.2vw,18px);opacity:.95}
+.ctas{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.btn{border:2px solid #fff;color:#fff;background:transparent;padding:10px 16px;border-radius:10px;font-weight:800;cursor:pointer}
+.btn.primary{background:#2b7a4b;border-color:#2b7a4b}
+.btn.secondary{background:#fff;color:#2b7a4b;border-color:#fff}
+.btn:hover{filter:brightness(.95);box-shadow:0 10px 24px #0002}
 
-  /* Sections */
-  section{padding:80px 20px}
-  .container{max-width:1120px;margin:auto}
-  .title{font-size:clamp(28px,3.6vw,42px);text-align:center;color:#2a3a2a;margin:0 0 8px}
-  .strap{color:#8b6b39;text-align:center;margin:0 0 36px}
+/* section generic */
+section{padding:80px 20px;background:#fff}
+.container{max-width:1180px;margin:auto}
+.title{font-weight:900;letter-spacing:.08em;text-align:center;color:#24413a;font-size:clamp(28px,4.5vw,44px);margin:0 0 6px}
+.strap{color:#8b6f56;text-align:center;margin:0 0 36px}
 
-  /* Story */
-  .story-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:20px}
-  .pill{background:#fff;border:1px solid #eee;border-radius:14px;padding:16px;text-align:center;box-shadow:0 6px 18px #00000010}
-  .pill .ico{font-size:28px}
-  .pill h4{margin:10px 0 6px;color:var(--accent)}
-  .story-cols{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:28px}
-  .core{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:24px}
-  .core .ball{width:92px;height:92px;border-radius:50%;background:var(--accent);color:#fff;
-    display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;margin:0 auto 10px}
-  .card{background:#fff;border-radius:14px;padding:18px;box-shadow:0 10px 26px #00000012}
+/* ====== 可淡化背景工具 ====== */
+.bg-photo{ position:relative; isolation:isolate; overflow:hidden; }
+.bg-photo::before{
+  content:""; position:absolute; inset:0; z-index:0;
+  background: var(--bg-url, none) center/cover no-repeat;
+  filter: var(--bg-filter, contrast(.95) brightness(1.15));
+  opacity: var(--bg-opacity, .15);
+}
+.bg-photo > .container{ position:relative; z-index:1 }
 
-  /* Offerings */
-  /* Products & Services cards（手機 1 欄／平板 2 欄／桌機 3 欄） */
-.offer-grid{display:grid;gap:20px;grid-template-columns:1fr;}
-@media(min-width:700px){.offer-grid{grid-template-columns:repeat(2,1fr);}}
-@media(min-width:1100px){.offer-grid{grid-template-columns:repeat(3,1fr);}}
-.offer .thumb{width:100%;height:190px;border-radius:12px;object-fit:cover;margin-bottom:10px}
-/* 讓「產品與服務」卡片的標題置中 */
-#offerings .offer h3 { 
-  text-align: center; 
+/* story */
+.story{display:grid;gap:26px;grid-template-columns:1.15fr .85fr; align-items:center}
+@media(max-width:960px){.story{grid-template-columns:1fr}}
+.story h3{margin:0 0 10px;color:#2b7a4b}
+.story p{margin:6px 0;line-height:1.9;color:#36463f}
+.story .pic{border-radius:16px;overflow:hidden;box-shadow:var(--shadow);background:#fff}
+.story .pic img{display:block;width:100%;height:auto}
+
+/* trio panel */
+.trio{margin-top:28px;background:#ffffff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:22px}
+.trio .row{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;text-align:center}
+@media(max-width:900px){.trio .row{grid-template-columns:1fr}}
+.trio .ball{width:80px;height:80px;border-radius:999px;background:var(--brand);color:#fff;font-weight:900;
+display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:28px;line-height:1}
+
+/* products */
+#offerings{background:#f5fbf7}
+.grid2{display:grid;gap:22px;grid-template-columns:1fr}
+@media(min-width:760px){.grid2{grid-template-columns:1fr 1fr}}
+.card{background:#fff;border-radius:16px;border:1px solid var(--line);box-shadow:var(--shadow);padding:16px}
+.card h3{margin:8px 0 6px;color:#175e37}
+.badge{display:inline-block;background:#e8f8ee;border:1px solid #cfead9;color:#238457;border-radius:999px;font-size:12px;padding:4px 10px;margin-bottom:6px}
+.thumb{width:100%;height:240px;border-radius:12px;object-fit:cover;margin:8px 0}
+.bullets{margin:10px 0 0;padding-left:18px}
+.bullets li{margin:6px 0;color:#3b4a43}
+
+/* ESG */
+#esg{background:#f4f8f2}
+.esg-in{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:center}
+@media(max-width:1000px){.esg-in{grid-template-columns:1fr}}
+.esg-in h4{margin:10px 0 8px;color:#1c6a3e}
+.esg-in p{margin:6px 0;line-height:1.9;color:#32443b}
+.esg-pic{border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+.esg-pic img{width:100%;display:block}
+
+/* ➕ ESG 標題 ICON（新加） */
+.esg-title{display:flex;align-items:center;gap:10px}
+.esg-ico{
+  width:28px;height:28px;border-radius:999px;
+  display:flex;align-items:center;justify-content:center;
+  background:#eaf7ee;border:1px solid #d6eadc;color:#2b7a4b;font-size:16px;flex:0 0 28px
 }
 
-/* 如果連副標(描述)也想置中，順便加這行 */
-#offerings .offer p { 
-  text-align: center; 
-}
+/* contact */
+#contact{background:transparent}
+#contact .veil{background:#1d3f2eeb;border-radius:18px;color:#e9fff3;box-shadow:var(--shadow);padding:26px}
+#contact .title{color:#24413a}
+#contact .strap{color:#8b6f56}
+.contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:10px}
+@media(max-width:900px){.contact-grid{grid-template-columns:1fr}}
+.icon{font-size:30px}
+.center{text-align:center}
 
-/* （可選）整張卡片置中，但仍讓條列點保持靠左 */
-#offerings .offer { text-align: center; }
-#offerings .offer .bullets { 
-  text-align: left; 
-  display: inline-block; /* 讓項目列表在卡片中央呈現 */
-}
+/* footer */
+footer{background:#113b28;color:#bde7d1;text-align:center;padding:18px}
 
+/* 品牌故事 Hero 調整 */
+#story.story-hero{ padding-top:90px; padding-bottom:70px; }
+#story.story-hero .title{ font-size:clamp(32px,5vw,52px); letter-spacing:.08em; color:#24413a; text-align:center; margin-bottom:6px; font-weight:900; }
+#story.story-hero .strap{ text-align:center; color:#5d6c63; margin-bottom:28px; }
 
-  /* 新增：精選區塊（大圖＋文字） */
-  .feature {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
-    margin-top: 26px;
-  }
-  .feature .thumb {
-    width: 100%;
-    height: 260px;
-    object-fit: cover;
-    border-radius: 12px;
-  }
-  .feature .copy h3 { margin: 0 0 8px; color: var(--accent); }
-  .feature .copy p { margin: 0; line-height: 1.7; }
-  @media (min-width: 900px) {
-    .feature { grid-template-columns: 1.1fr .9fr; align-items: center; }
-  }
+/* values（2×2 手機1欄） */
+.values{ display:grid; gap:18px; grid-template-columns:1fr; margin-top:22px; }
+@media(min-width:680px){ .values{ grid-template-columns:repeat(2,1fr);} }
+.val{ background:transparent; border:0; box-shadow:none; padding:6px 6px 10px; text-align:center; }
+.val b{ display:block; margin:6px 0 4px; color:#1f6a44; }
+.val .txt{ color:#54655c; }
+.val .dot{ width:58px;height:58px;border-radius:999px;margin:0 auto 8px;background:#2b7a4b;color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center; }
 
-  /* Flow */
-  .flow{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:22px}
-  @media(min-width:800px){.flow{grid-template-columns:repeat(4,1fr)}}
-  .step{background:#fff;border-radius:12px;padding:18px;text-align:center;box-shadow:0 10px 26px #00000012}
-  .step .dot{width:54px;height:54px;margin:0 auto 8px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800}
-
-  /* News */
-  .news-grid{display:grid;grid-template-columns:1fr;gap:16px}
-  @media(min-width:900px){.news-grid{grid-template-columns:repeat(3,1fr)}}
-  .news{background:#fff;border-radius:14px;padding:18px;box-shadow:0 10px 26px #00000012}
-  .tag{display:inline-block;background:#f0f7ef;color:var(--accent);padding:4px 10px;border-radius:999px;font-size:12px;margin-bottom:6px}
-  .date{color:#6b7b6b;font-size:13px;margin-bottom:8px}
-
-  /* ESG & partners */
-  .impact{display:grid;gap:28px}
-  @media(min-width:980px){.impact{grid-template-columns:1.2fr .8fr}}
-  .esg li{margin:10px 0}
-  .partners{background:#fff;border-radius:12px;padding:18px;box-shadow:0 10px 26px #00000012}
-  .partners-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:8px}
-  .partner{background:#f7fbf6;border:1px dashed #cde9d8;border-radius:10px;padding:14px;text-align:center}
-  .cta-center{margin-top:26px;text-align:center}
-
-  /* Contact */
-  .contact{display:grid;gap:22px}
-  @media(min-width:980px){.contact{grid-template-columns:.9fr 1.1fr}}
-  .info p{margin:6px 0}
-  .form{background:#fff;border-radius:12px;padding:18px;box-shadow:0 10px 26px #00000012}
-  .field{display:flex;flex-direction:column;margin-bottom:12px}
-  .field input,.field textarea{border:2px solid var(--accent);border-radius:8px;padding:10px;font:inherit}
-  .submit{width:100%;background:var(--primary);border:none;color:#fff;padding:12px;border-radius:10px;font-weight:800;cursor:pointer}
-  .submit:hover{background:var(--accent)}
-
-  /* Social */
-  .social{display:flex;justify-content:center;gap:18px;margin-top:14px}
-
-  /* 小動畫 */
-  .reveal{opacity:0;transform:translateY(18px);transition:all .6s ease}
-  .reveal.show{opacity:1;transform:none}
-
-  footer{background:var(--accent);color:#fff;text-align:center;padding:30px 16px;margin-top:40px}
+/* trio 標題加大 */
+.trio h3{ font-size:clamp(24px,3.4vw,36px); font-weight:900; letter-spacing:.06em; }
+.trio h3.center{ margin:10px 0 16px; }
 </style>
 </head>
 <body>
 
-<header class="container">
-  <div class="brand">
-    <img id="logoImg" alt="logo" />
-    <span>大豐臨實業有限公司</span>
+<header>
+  <div class="nav">
+    <div class="brand">
+      <img id="logo" alt="logo">
+      <b>大豐臨實業有限公司</b>
+    </div>
+    <nav>
+      <a href="#story">品牌故事</a>
+      <a href="#offerings">產品與服務</a>
+      <a href="#news">消息中心</a>
+      <a href="#esg">社群永續</a>
+      <a href="#contact">聯絡我們</a>
+    </nav>
   </div>
-  <nav>
-    <a href="#home">首頁</a>
-    <a href="#story">品牌故事</a>
-    <a href="#offerings">產品與服務</a>
-    <a href="#news">消息中心</a>
-    <a href="#impact">社群與永續</a>
-    <a href="#contact">聯絡我們</a>
-  </nav>
 </header>
 
-<!-- Hero -->
+<!-- HERO（輪播＋主題文案） -->
 <section id="home" class="hero">
   <div id="slides" class="slides"></div>
   <div class="hero-overlay">
-    <div class="overlay-box">
+    <div class="panel">
       <h1 id="heroTitle">種下一個約定 讓豐收降臨</h1>
       <p id="heroSub">轉廢為能，點土成金。與土地共創永續循環的美好未來。</p>
       <div class="ctas">
@@ -215,121 +208,124 @@
   </div>
 </section>
 
-<!-- 品牌故事 -->
-<section id="story">
+<!-- 品牌故事（淡化背景） -->
+<section id="story" class="bg-photo story-hero">
   <div class="container">
     <h2 class="title">品牌故事</h2>
-    <p id="storyStrap" class="strap">在繁華的都市角落與廣袤的田野之間，我們始終記得與土地最初的約定</p>
+    <p class="strap" id="storyStrap">在繁華的都市角落與廣袤的田野之間，我們始終記得與土地最初的約定</p>
 
-    <div class="story-cols">
-      <div class="card">
-        <h3 style="margin-top:0;color:var(--accent)">源起：一份對土地的疼惜</h3>
-        <p id="storyP1">我們的故事，始於創辦人對土地最深切的疼惜。面對餐廚廢棄物被視為負擔、往焚化場或掩埋場一途的現況，我們選擇打開一條原本廢棄也能再生的循環路。</p>
-        <p id="storyP2">於是，「大豐臨實業有限公司」誕生。我們堅信：減碳與豐收不必二選一，科技能與自然的完整結合，讓土壤更健康、社會更永續。</p>
+    <div class="story">
+      <div>
+        <h3>源起：一份對土地的疼惜</h3>
+        <p id="storyP1">我們的故事，始於創辦人對土地深切的疼惜。他看見化學肥料與工業廢棄物正逐漸侵蝕土壤的健康，農人汗水灌溉的</p>
+        <p id="storyP2">減碳與豐收不必二選一。透過循環農業與科學堆肥，讓土壤更健康、社會更永續。</p>
       </div>
-      <div class="story-grid">
-        <div class="pill reveal"><div class="ico">♻️</div><h4>循環經濟</h4><p id="v1">廢棄物變成做值的資源</p></div>
-        <div class="pill reveal"><div class="ico">🌱</div><h4>土壤健康</h4><p id="v2">科技與自然的完美結合</p></div>
-        <div class="pill reveal"><div class="ico">🌍</div><h4>環境保護</h4><p id="v3">減少碳排放，回歸於土地</p></div>
-        <div class="pill reveal"><div class="ico">🤝</div><h4>社會關懷</h4><p id="v4">創造綠色就業與機會</p></div>
+      <div class="pic"><img id="storyImg" alt=""></div>
+    </div>
+
+    <div class="values">
+      <div class="val">
+        <div class="dot">♻</div><b>循環經濟</b><div id="v1" class="txt">廢棄物變成有價值資源</div>
+      </div>
+      <div class="val">
+        <div class="dot">🌱</div><b>土壤健康</b><div id="v2" class="txt">科技與自然的完美結合</div>
+      </div>
+      <div class="val">
+        <div class="dot">🤝</div><b>社會關懷</b><div id="v3" class="txt">創造在地共好與就業</div>
+      </div>
+      <div class="val">
+        <div class="dot">🌍</div><b>環境保護</b><div class="txt">減少碳排放</div>
       </div>
     </div>
 
-    <div class="core">
-      <div class="pill reveal"><div class="ball">碳</div><h4>環境責任</h4><p id="c1">將原本造成碳足跡的源頭，透過堆肥技術，穩定地封存於土壤之中。</p></div>
-      <div class="pill reveal"><div class="ball">穩</div><h4>品質保證</h4><p id="c2">穩定土壤健康，提供作物穩定而長效的營養。</p></div>
-      <div class="pill reveal"><div class="ball">豐</div><h4>社會關懷</h4><p id="c3">與社區、農場合作，推廣有機廚餘回收，建立共享生態圈。</p></div>
+    <div class="trio">
+      <h3 class="center" style="margin:6px 0 12px;color:#2b7a4b">核心：從「碳穩穩」到「大豐臨」</h3>
+      <div class="row">
+        <div><div class="ball">碳</div><b>環境責任</b><p id="c1">將碳穩定封存於土壤中，邁向碳中和</p></div>
+        <div><div class="ball">穩</div><b>品質保證</b><p id="c2">提供作物穩定、長效的營養來源</p></div>
+        <div><div class="ball">穩</div><b>社會關懷</b><p id="c3">與社區、農友合作，建立共享生態圈</p></div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- 產品與服務 -->
-<section id="offerings">
+<!-- 產品與服務（淡化背景） -->
+<section id="offerings" class="bg-photo">
   <div class="container">
     <h2 class="title">產品與服務</h2>
     <p class="strap">從廚房的果皮，到田裡的沃土；從破土的新芽，到餐桌的佳餚</p>
-
-    <!-- 新的 精選區塊：沒內容時會保持隱藏 -->
-    <div id="offerFeature" class="feature" style="display:none"></div>
-
-    <div id="offerGrid" class="offer-grid">
-      <!-- 卡片 A、B 由 JS 渲染 -->
-    </div>
-
-    <h3 class="title" style="margin-top:36px;color:var(--accent)">看得見的循環經濟</h3>
-    <div id="flow" class="flow"></div>
+    <div id="cards" class="grid2"></div>
   </div>
 </section>
 
-<!-- 消息中心 -->
-<section id="news">
+<!-- 消息中心（淡化背景） -->
+<section id="news" class="bg-photo">
   <div class="container">
     <h2 class="title">消息中心</h2>
-    <p class="strap">最新動態與成果分享</p>
-    <div id="newsGrid" class="news-grid"></div>
+    <p class="strap">最新公告、活動資訊與媒體報導</p>
+    <div id="newsWrap" class="news-grid"></div>
   </div>
 </section>
 
-<!-- 社群與永續 -->
-<section id="impact">
+<!-- 社群永續（淡化背景）-->
+<section id="esg" class="bg-photo">
   <div class="container">
-    <h2 class="title">社群與永續</h2>
-    <p class="strap">與您一起，為永續未來投票</p>
+    <h2 class="title">社群永續</h2>
+    <p class="strap">看得見的循環經濟：從垃圾變生機，從堆肥到新芽</p>
 
-    <div class="impact">
-      <div class="card">
-        <h3 style="color:var(--accent)">ESG 價值實踐</h3>
-        <ul id="esg" class="esg"></ul>
-      </div>
-      <div class="partners">
-        <h3 style="margin:0 0 6px;color:#2a3a2a">合作夥伴</h3>
-        <div id="partners" class="partners-grid"></div>
-      </div>
-    </div>
+    <div class="esg-in">
+      <div>
+        <h4 class="esg-title"><span class="esg-ico">🌿</span>環境（Environment）</h4>
+        <p id="e1">我們致力於將有機廢棄物轉化為有價值的資源，減少掩埋與焚燒，透過「碳穩穩」肥料將碳封存在土壤中。</p>
 
-    <div class="cta-center">
-      <a class="btn primary" href="#contact">立即聯絡我們</a>
+        <h4 class="esg-title"><span class="esg-ico">🤝</span>社會（Social）</h4>
+        <p id="e2">與在地社區、農場合作，建立回收網絡，推廣環境教育，提升大眾對資源意識。</p>
+
+        <h4 class="esg-title"><span class="esg-ico">⚖️</span>治理（Governance）</h4>
+        <p id="e3">以透明負責的營運模式，落實誠信與永續決策，建立長期信任。</p>
+      </div>
+
+      <!-- 右側圖片：可在後台「ESG 圖片」上傳或貼網址 -->
+      <div class="esg-pic"><img id="esgImg" alt=""></div>
     </div>
   </div>
 </section>
 
-<!-- 聯絡我們 -->
-<section id="contact">
-  <div class="container contact">
-    <div class="info card">
-      <h2 class="title" style="text-align:left">聯絡我們</h2>
-      <p id="tel">電話：+886-7-657-7151</p>
-      <p id="mail">電子郵件：info@dafengling.com</p>
-      <p id="addr">地址：台灣台北市信義區永續大道123號</p>
-      <hr/>
-      <p id="open1">週一至週五：09:00 - 18:00</p>
-      <p id="open2">週六：09:00 - 12:00</p>
-      <p id="open3">週日：休息</p>
-      <div class="social">
-        <a href="#" aria-label="Facebook"><img src="https://img.icons8.com/ios-glyphs/30/facebook-new.png"/></a>
-        <a href="#" aria-label="Instagram"><img src="https://img.icons8.com/ios-glyphs/30/instagram-new.png"/></a>
-        <a href="#" aria-label="Line"><img src="https://img.icons8.com/ios-glyphs/30/line-me.png"/></a>
+<!-- 聯絡我們（淡化背景；保留深色幕簾） -->
+<section id="contact" class="bg-photo">
+  <div class="container">
+    <h2 class="title">聯絡我們</h2>
+    <p class="strap">有問題或合作提案嗎？歡迎隨時與我們聯繫！</p>
+
+    <div class="veil">
+      <div class="contact-grid">
+        <div class="center">
+          <div class="icon">📞</div>
+          <h3>電話</h3>
+          <div id="tel">+886-7-657-7151</div>
+        </div>
+        <div class="center">
+          <div class="icon">✉️</div>
+          <h3>電子郵件</h3>
+          <div id="mail">info@dafengling.com</div>
+        </div>
+        <div class="center">
+          <div class="icon">📍</div>
+          <h3>地址</h3>
+          <div id="addr">台灣台北市信義區永續大道123號</div>
+        </div>
       </div>
     </div>
-
-    <form class="form">
-      <h3 style="margin-top:0;color:#2a3a2a">聯絡表單</h3>
-      <div class="field"><label>姓名 *</label><input required placeholder="請輸入您的姓名"></div>
-      <div class="field"><label>電子郵件 *</label><input type="email" required placeholder="請輸入您的 Email"></div>
-      <div class="field"><label>主旨</label><input placeholder="請輸入主旨"></div>
-      <div class="field"><label>訊息內容</label><textarea rows="6" placeholder="請輸入您的訊息"></textarea></div>
-      <button type="submit" class="submit">送出訊息</button>
-    </form>
   </div>
 </section>
 
 <footer>© <span id="year"></span> 大豐臨實業有限公司．All rights reserved.</footer>
 
 <script>
-/* ---------- 預設資料（若 LocalStorage 沒資料，就用這些） ---------- */
+/* ===== 預設資料（含 HERO） ===== */
 const defaults = {
-  logo: "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=200&auto=format&fit=crop",
-  hero: {
+  logo:"https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=200&auto=format&fit=crop",
+  hero:{
     title:"種下一個約定 讓豐收降臨",
     sub:"轉廢為能，點土成金。與土地共創永續循環的美好未來。",
     cta1:{text:"了解我們的故事",href:"#story"},
@@ -340,192 +336,183 @@ const defaults = {
       "https://images.pexels.com/photos/721991/pexels-photo-721991.jpeg"
     ]
   },
+  storyImg:"https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1600&auto=format&fit=crop",
+  esgImg:"https://images.unsplash.com/photo-1558985040-ed4d5029db49?q=80&w=1600&auto=format&fit=crop",
   story:{
-    strap:"在繁華的都市角落與廣袤的田野之間，我們始終記得與土地最初的約定",
-    p1:"我們的故事，始於創辦人對土地最深切的疼惜。面對餐廚廢棄物被視為負擔、往焚化場或掩埋場一途的現況，我們選擇打開一條原本廢棄也能再生的循環路。",
-    p2:"我們堅信：減碳與豐收不必二選一，科技能與自然的完整結合，讓土壤更健康、社會更永續。",
-    values:[
-      "廢棄物變成做值的資源","科技與自然的完美結合","減少碳排放，回歸於土地","創造綠色就業與機會"
-    ],
-    core:[
-      "將碳封存於土壤中，落實環境責任。","穩定土壤健康，提供作物長效營養。","串連社區與農場，建立共享生態圈。"
-    ]
+    strap:"在繁華的都市角落與廣袤的田野之間，我們記得與土地最初的約定",
+    p1:"我們的故事，始於創辦人對土地深切的疼惜與承諾……",
+    p2:"減碳與豐收不必二選一。透過循環農業與科學堆肥，讓土壤更健康、社會更永續。",
+    values:["廢棄物變成有價值資源","科技與自然的完美結合","創造在地共好與就業"],
+    core:["將碳穩定封存於土壤中，邁向碳中和","提供作物穩定、長效的營養來源","與社區、農友合作，建立共享生態圈"]
   },
   offerings:{
-  feature:{ img:"", title:"", text:"" }, // 如果你已加「精選」就保留
-  cards:[
-    {
-      title:"碳穩穩有機質肥料",
-      sub:"為您的餐桌穩住健康",
-      img:"",
-      bullets:["改善土壤健康，提供長效營養","適用於農田與家庭園藝","固碳減排，打造會呼吸的農田"]
-    },
-    {
-      title:"有機廢棄物回收服務",
-      sub:"舉手之勞，永續之鑰",
-      img:"",
-      bullets:["社區合作，建立共好生態圈","完整回收處理流程","促進循環經濟，資源永續利用"]
-    },
-    { // ➜ 新增的卡片 C（放你的新主題；之後可由後台編）
-      title:"讓廢棄物回到土地，讓循環經濟根",
-      sub:"打造會呼吸的農田，種出自然碳匯實現碳中和",
-      img:"",
-      bullets:["自然碳匯・碳中和","友善土壤・健康作物","循環經濟・永續家園"]
-    }
-
-  ],
-  
-  flow:["有機廢棄物","專業處理","碳穩穩肥料","豐收成果"]
-}
-,
-  news:[
-    {tag:"公司新聞",date:"2024年3月15日",title:"大豐臨與在地農場簽署合作協議",excerpt:"攜手推動有機農業發展，建立永續循環生態系統…",link:"#"},
-    {tag:"成果分享",date:"2024年3月10日",title:"碳穩穩肥料助力農友增產30%",excerpt:"經過一季的使用，合作農友反映作物品質顯著提升…",link:"#"},
-    {tag:"活動資訊",date:"2024年3月20日",title:"永續農業研討會即將舉辦",excerpt:"邀請各界專家學者共同探討循環農業的未來發展…",link:"#"}
-  ],
-  esg:{
-    items:[
-      {abbr:"E",title:"環境（Environmental）",desc:"固碳減排、減少焚化掩埋，促進循環經濟"},
-      {abbr:"S",title:"社會（Social）",desc:"創造綠色就業、支持在地農業，確保食品安全"},
-      {abbr:"G",title:"治理（Governance）",desc:"誠信透明、永續決策、負責任的企業經營"}
-    ],
-    partners:["在地農場","社區組織","環保團體","學術機構"]
+    cards:[
+      {badge:"核心產品",title:"碳穩穩有機質肥料",sub:"為您的餐桌穩住健康",
+       img:"https://images.unsplash.com/photo-1581888227599-779811939961?q=80&w=1600&auto=format&fit=crop",
+       bullets:["改善土壤健康，提供長效營養","適用於農田與家庭園藝","固碳減排，打造會呼吸的農田"]},
+      {badge:"專業服務",title:"有機廢棄物回收服務",sub:"舉手之勞，永續之鑰",
+       img:"https://images.unsplash.com/photo-1520591799317-1c76e2ed1e86?q=80&w=1600&auto=format&fit=crop",
+       bullets:["社區合作，建立共好生態圈","完整回收處理流程","促進循環經濟，資源永續利用"]},
+      {badge:"亮點案例",title:"讓廢棄物回到土地",sub:"打造碳匯農地，實現碳中和",
+       img:"https://images.unsplash.com/photo-1524592714635-d77511a4834a?q=80&w=1600&auto=format&fit=crop",
+       bullets:["自然碳匯・碳中和","友善土壤・健康作物","循環經濟・永續家園"]}
+    ]
   },
-  contact:{
-    phone:"+886-7-657-7151",
-    mail:"info@dafengling.com",
-    addr:"台灣台北市信義區永續大道123號",
-    open:["週一至週五：09:00 - 18:00","週六：09:00 - 12:00","週日：休息"]
-  }
+  esgText:["…","…","…"],
+  contact:{phone:"+886-7-657-7151",mail:"info@dafengling.com",addr:"台灣台北市信義區永續大道123號"},
+  bg:{
+    story:{  url:"https://images.unsplash.com/photo-1615716200048-1b1d0e012297?q=80&w=1600&auto=format&fit=crop", opacity:.15},
+    offerings:{url:"https://images.unsplash.com/photo-1523861751938-30554961e309?q=80&w=1600&auto=format&fit=crop", opacity:.12},
+    news:{   url:"https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?q=80&w=1600&auto=format&fit=crop", opacity:.12},
+    esg:{    url:"https://images.unsplash.com/photo-1549880338-65ddcdfd017b?q=80&w=1600&auto=format&fit=crop", opacity:.12},
+    contact:{url:"https://images.unsplash.com/photo-1543339308-43f61b6d13a2?q=80&w=1600&auto=format&fit=crop", opacity:.25}
+  },
+  /* 消息中心預設資料 */
+  news:[
+    {title:"與在地農會簽署合作備忘錄", date:"2025-09-01", link:"#"},
+    {title:"碳穩穩產品通過第三方檢驗", date:"2025-08-15", link:"#"},
+    {title:"社區資源回收據點再擴點", date:"2025-07-20", link:"#"},
+    {title:"參與永續展：攤位活動花絮", date:"2025-06-05", link:"#"}
+  ]
 };
+applyBG('esg','esg');
 
-/* ---------- 讀取儲存資料 ---------- */
-function load(key, fallback){ try{
-  const raw = localStorage.getItem(key);
-  return raw ? JSON.parse(raw) : structuredClone(fallback);
-}catch(e){ return structuredClone(fallback); }}
+function load(key,fallback){try{
+  const raw=localStorage.getItem(key); return raw?JSON.parse(raw):structuredClone(fallback);
+}catch{return structuredClone(fallback)}}
 
-/* ---------- 渲染 ---------- */
-function renderAll(){
+/* 背景工具 */
+function getBG(section){
+  const def = (defaults.bg && defaults.bg[section]) || {};
+  const url = localStorage.getItem(`bg.${section}.url`) || def.url || "";
+  const op  = parseFloat(localStorage.getItem(`bg.${section}.opacity`));
+  const opacity = isNaN(op) ? (def.opacity ?? 0.15) : op;
+  const mono = localStorage.getItem(`bg.${section}.mono`);
+  const isMono = mono === '1';
+  return {url, opacity, isMono};
+}
+function applyBG(sectionId, sectionKey){
+  const sec = document.getElementById(sectionId);
+  if(!sec) return;
+  const bg = getBG(sectionKey);
+  sec.classList.add('bg-photo');
+  sec.style.setProperty('--bg-url', bg.url ? `url('${bg.url}')` : 'none');
+  sec.style.setProperty('--bg-opacity', bg.opacity);
+  const filterValue = bg.isMono
+    ? 'grayscale(1) contrast(.95) brightness(1.3)'
+    : 'contrast(.95) brightness(1.15)';
+  sec.style.setProperty('--bg-filter', filterValue);
+}
+
+(function render(){
   // logo
-  const logo = localStorage.getItem('site.logo') || defaults.logo;
-  document.getElementById('logoImg').src = logo;
+  document.getElementById('logo').src = localStorage.getItem('site.logo') || defaults.logo;
 
-  // hero
+  // 產品卡 ICON 自動判斷
+  function pickIcon(text=''){
+    const t = String(text).trim();
+    if(t.includes('核心') || t.includes('碳穩穩')){
+      return `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 12c0 4.418 3.582 8 8 8 4.07 0 7.46-3.05 7.95-7.01C15 13 11 9 11 3 7.134 3 5 6.686 5 12z"/></svg>`;
+    }
+    if(t.includes('專業') || t.includes('服務')){
+      return `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 7l-3-3-4 4 3 3 4-4zM3 17l6 4 9-9-3-3-9 9v3z"/></svg>`;
+    }
+    if(t.includes('亮點') || t.includes('案例')){
+      return `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>`;
+    }
+    return '';
+  }
+
+  /* HERO */
   const hero = load('site.hero', defaults.hero);
   document.getElementById('heroTitle').textContent = hero.title;
   document.getElementById('heroSub').textContent = hero.sub;
   const c1 = document.getElementById('cta1'), c2 = document.getElementById('cta2');
-  c1.textContent = hero.cta1.text; c1.href = hero.cta1.href || '#';
-  c2.textContent = hero.cta2.text; c2.href = hero.cta2.href || '#';
+  if(c1){ c1.textContent = hero.cta1?.text || '了解我們的故事'; c1.href = hero.cta1?.href || '#story'; }
+  if(c2){ c2.textContent = hero.cta2?.text || '探索產品服務'; c2.href = hero.cta2?.href || '#offerings'; }
   const slides = document.getElementById('slides'); slides.innerHTML='';
-  (hero.slides && hero.slides.length?hero.slides:defaults.hero.slides).forEach(src=>{
-    const d = document.createElement('div'); d.className='slide'; d.style.backgroundImage=`url('${src}')`; slides.appendChild(d);
+  (hero.slides?.length ? hero.slides : defaults.hero.slides).forEach(src=>{
+    const d=document.createElement('div'); d.className='slide'; d.style.backgroundImage=`url('${src}')`; slides.appendChild(d);
   });
-  // simple auto-play
-  let idx=0; setInterval(()=>{ idx=(idx+1)%slides.children.length; slides.style.transform=`translateX(-${idx*100}%)`; },5000);
+  if(slides.children.length){
+    let idx=0; setInterval(()=>{ idx=(idx+1)%slides.children.length; slides.style.transform=`translateX(-${idx*100}%)`; },5000);
+  }
 
-  // story
+  /* STORY */
   const story = load('site.story', defaults.story);
   document.getElementById('storyStrap').textContent = story.strap;
   document.getElementById('storyP1').textContent = story.p1;
   document.getElementById('storyP2').textContent = story.p2;
-  ['v1','v2','v3','v4'].forEach((id,i)=>document.getElementById(id).textContent = story.values[i] || '');
-  ['c1','c2','c3'].forEach((id,i)=>document.getElementById(id).textContent = story.core[i] || '');
+  ['v1','v2','v3'].forEach((id,i)=>{ const el=document.getElementById(id); if(el) el.textContent=story.values[i]||''; });
+  ['c1','c2','c3'].forEach((id,i)=>{ document.getElementById(id).textContent = story.core[i]||''; });
+  document.getElementById('storyImg').src = localStorage.getItem('site.storyImg') || defaults.storyImg;
 
-  // offerings cards
+  /* PRODUCTS（只顯示兩張） */
   const offers = load('site.offerings', defaults.offerings);
-  const wrap = document.getElementById('offerGrid'); wrap.innerHTML='';
-  offers.cards.forEach(card=>{
-    const el = document.createElement('article');
-    el.className='card offer reveal';
+  const wrap = document.getElementById('cards'); wrap.innerHTML='';
+  (offers.cards || []).slice(0,2).forEach(card=>{
+    const el = document.createElement('article'); el.className='card';
+    const iconSVG = pickIcon(card.badge || card.title);
     el.innerHTML = `
-      ${card.img ? `<img class="thumb" src="${card.img}" alt="">` : ''}
-      <h3 style="margin:.2rem 0;color:var(--accent)">${card.title}</h3>
-      <p>${card.sub||''}</p>
-      <ul class="bullets">${(card.bullets||[]).map(b=>`<li>• ${b}</li>`).join('')}</ul>
+      ${card.badge?`<span class="badge">${card.badge}</span>`:''}
+      <div class="title-row">
+        ${iconSVG ? `<span class="icon-circle">${iconSVG}</span>` : ``}
+        <h3>${card.title||''}</h3>
+      </div>
+      <div style="color:#6c7b6c">${card.sub||''}</div>
+      ${card.img?`<img class="thumb" src="${card.img}">`:''}
+      ${(card.desc?`<p>${card.desc}</p>`:'')}
+      ${(card.bullets&&card.bullets.length)?`<ul class="bullets">${card.bullets.map(b=>`<li>${b}</li>`).join('')}</ul>`:''}
     `;
     wrap.appendChild(el);
   });
 
-  // --- 新增：Offerings feature render（大圖＋文字）---
-  const featureBox = document.getElementById('offerFeature');
-  const f = (offers.feature || {});
-  const hasFeature =
-    (f.img && f.img.trim()) ||
-    (f.title && f.title.trim()) ||
-    (f.text && f.text.trim());
-
-  if (featureBox) {
-    if (hasFeature) {
-      featureBox.style.display = '';
-      featureBox.innerHTML = `
-        ${f.img
-          ? `<img class="thumb" src="${f.img}" alt="">`
-          : `<div class="thumb"
-               style="background:#f2f5f2;display:flex;align-items:center;justify-content:center;border:1px dashed #cfe5d6;color:#8aa08f">
-               請於後台上傳精選圖片
-             </div>`
-        }
-        <div class="copy">
-          ${f.title ? `<h3>${f.title}</h3>` : ''}
-          ${f.text  ? `<p>${f.text}</p>` : ''}
-        </div>
+  /* NEWS */
+  function formatDate(iso){
+    try{ const d = new Date(iso); if(isNaN(d)) return iso||''; return `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`; }
+    catch{ return iso||''; }
+  }
+  const newsData = load('site.news', defaults.news);
+  const nw = document.getElementById('newsWrap');
+  if(nw){
+    nw.innerHTML = '';
+    (newsData || []).slice(0,3).forEach(n=>{
+      const a = document.createElement('a');
+      a.href = n.link || '#';
+      a.className = 'news-card';
+      const tag = (n.badge || n.tag || '公告更新').trim();
+      const excerpt = n.excerpt || '';
+      a.innerHTML = `
+        ${tag?`<span class="news-badge">${tag}</span>`:''}
+        <time>${formatDate(n.date||'')}</time>
+        <h4 class="news-title">${n.title||''}</h4>
+        ${excerpt ? `<p class="news-excerpt">${excerpt}</p>` : ``}
+        <span class="news-more">閱讀更多 →</span>
       `;
-    } else {
-      featureBox.style.display = 'none';
-      featureBox.innerHTML = '';
-    }
+      nw.appendChild(a);
+    });
   }
 
-  // flow
-  const flow = document.getElementById('flow'); flow.innerHTML='';
-  (offers.flow||[]).forEach((t,i)=>{
-    const s=document.createElement('div'); s.className='step reveal'; s.innerHTML=`<div class="dot">${i+1}</div><div>${t}</div>`; flow.appendChild(s);
-  });
+  /* ESG 圖片與文字 */
+  document.getElementById('esgImg').src = localStorage.getItem('site.esgImg') || defaults.esgImg;
+  const et = load('site.esgText', defaults.esgText);
+  ['e1','e2','e3'].forEach((id,i)=>{ const el=document.getElementById(id); if(el&&et[i]) el.textContent=et[i]; });
 
-  // news
-  const news = load('site.news', defaults.news);
-  const ng = document.getElementById('newsGrid'); ng.innerHTML='';
-  news.forEach(n=>{
-    const nEl=document.createElement('article'); nEl.className='news reveal';
-    nEl.innerHTML=`<span class="tag">${n.tag||''}</span>
-      <div class="date">${n.date||''}</div>
-      <h3 style="margin:.2rem 0 .4rem">${n.title||''}</h3>
-      <p>${n.excerpt||''}</p>
-      <a href="${n.link||'#'}">閱讀更多 →</a>`;
-    ng.appendChild(nEl);
-  });
+  /* CONTACT */
+  const c = load('site.contact', defaults.contact);
+  document.getElementById('tel').textContent = c.phone;
+  document.getElementById('mail').textContent = c.mail;
+  document.getElementById('addr').textContent = c.addr;
 
-  // esg & partners
-  const esg = load('site.esg', defaults.esg);
-  const ul=document.getElementById('esg'); ul.innerHTML='';
-  esg.items.forEach(it=>{
-    const li=document.createElement('li'); li.className='reveal';
-    li.innerHTML=`<strong style="color:var(--accent)">${it.abbr}</strong> ${it.title} — ${it.desc}`;
-    ul.appendChild(li);
-  });
-  const pt=document.getElementById('partners'); pt.innerHTML='';
-  esg.partners.forEach(p=>{
-    const d=document.createElement('div'); d.className='partner reveal'; d.textContent=p; pt.appendChild(d);
-  });
-
-  // contact
-  const ci = load('site.contact', defaults.contact);
-  document.getElementById('tel').textContent = "電話：" + ci.phone;
-  document.getElementById('mail').textContent = "電子郵件：" + ci.mail;
-  document.getElementById('addr').textContent = "地址：" + ci.addr;
-  [ci.open[0],ci.open[1],ci.open[2]].forEach((t,i)=>{ const id=['open1','open2','open3'][i]; if(document.getElementById(id)) document.getElementById(id).textContent=t; });
-
-  // reveal animation
-  const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target);} }),{threshold:.12});
-  document.querySelectorAll('.reveal').forEach(n=>io.observe(n));
-
-  // footer year
   document.getElementById('year').textContent = new Date().getFullYear();
-}
 
-renderAll();
+  /* 背景淡化 */
+  applyBG('story','story');
+  applyBG('offerings','offerings');
+  applyBG('news','news');
+  applyBG('esg','esg');
+  applyBG('contact','contact');
+})();
 </script>
 </body>
 </html>
